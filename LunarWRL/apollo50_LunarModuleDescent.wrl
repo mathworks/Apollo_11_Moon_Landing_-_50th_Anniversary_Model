@@ -1,0 +1,113 @@
+#VRML V2.0 utf8
+# Topography data / texture images used are from the Clementine Mission to the Moon:
+# http://www.cmf.nrl.navy.mil/clementine/
+# http://wwwpds.wustl.edu/missions/CLEMENTINE/gravtopo.html
+# SkyDome, Moon and LSAM moved so that translation (LSAM) at time 0 = [0 0 0]
+
+EXTERNPROTO Triad [
+  exposedField SFInt32 negativeAxes
+  exposedField SFVec3f scale
+  exposedField SFRotation rotation
+  exposedField SFVec3f position
+]
+"*sl3dlib/objects/Components/Shapes/Triad.wrl" 
+
+WorldInfo {
+  title "Apollo Lunar Module Descent Animation"
+  info "Copyright 1998-2019 HUMUSOFT s.r.o. and The MathWorks, Inc." 
+}
+NavigationInfo {
+  visibilityLimit 2e+07
+  type "examine" 
+  speed 10
+  avatarSize [10, 10, 10]
+}
+DirectionalLight {
+  intensity 0.8
+  direction 1 -2 1
+}
+DirectionalLight {
+  intensity 0.8
+  direction -1 -2 -1
+}
+DEF SkyDome Transform {
+  # SkyDome diameter in the Inlined file is 10000
+  translation 1.45132e+06 -1.13879e+06 37269.6
+  scale 800 800 800
+  children Inline {
+    url "apollo50_SkyDome.wrl" 
+  }
+}
+DEF Moon Transform {
+  translation 1.45132e+06 1.13879e+06 37269.6
+  children Transform {
+    # scale to compensate lowlands at the landing site - (elevation at 15S45W  -2395m)
+    # so that LS is at [0 0 r_moon] as agreed
+    # Scale less to avoid overlapping with most detailed LS tile
+    # For model without Landing Site we don't have to distort the  Moon shape this way, commented out
+    # scale 1 1 1.0012
+    # Moon diameter in the Inlined file is 1738090
+    # Rotate Moon so that 15S 45W (Mare Humorum) is located at the "Top" = South Pole of the Moon 
+    # Why 15S 45W: so that the Landing site is far from the 8 tiles seam. 
+    # This model doesn't use middle detail tile, so we can rotate the Moon freely, 
+    # just necesaary to scale below so that Moon just touches the detailed terrain of Landing Site
+    rotation 1 0 0 -1.8326
+    children Transform {
+      # This transform to rotate the Moon along axis 
+      # 45 deg
+      rotation 0 1 0 0
+      children Inline {
+        url "apollo50_Moon.wrl" 
+      }
+    }
+  }
+}
+DEF LSAM Transform {
+  # translation -1.45132e+06 1.13879e+06 -37269.6
+  rotation -0.476813 -0.343702 -0.809022 2.51329
+  children [
+    # This transform to scale and initially orientate Lander in the scene
+    Transform {
+      translation 0 2 0
+      scale 0.1 0.1 0.1
+      rotation 0 0 1 3.14159
+      children Inline {
+        url "apollo50_Lander.wrl" 
+      }
+    }
+    DEF Triad_LL_Fixed Triad {
+      scale 50 50 50
+    }
+  ]
+}
+DEF Triad_LL_OrigRot Triad {
+  scale 25 25 25
+  rotation -0.476813 -0.343702 -0.809022 2.51329
+}
+DEF Camera_LSAM_Free_1 Transform {
+  rotation -0.680304 0.235045 -0.694219 2.67078
+  children DEF View_LSAM_5 Viewpoint {
+    description "Follow Lander 1"
+    position -27.8443 84.3587 28.3597
+    orientation -0.963573 -0.216149 0.157502 1.26369
+  }
+}
+DEF Camera_LSAM_Free_2 Transform {
+  children DEF View_LSAM_6 Viewpoint {
+    description "Follow Lander 2"
+    position -59.8389 54.185 -20.3642
+    orientation -0.730444 0.327211 0.599487 2.73123
+  }
+}
+DEF Camera_LSAM_Free_3 Transform {
+  rotation 0 1 0 0
+  children DEF View_LSAM_4 Viewpoint {
+    description "Follow Lander 3"
+    position -14.3008 1.49801 67.7175
+    orientation -0.0951325 -0.0705558 0.992961 2.25134
+  }
+}
+ROUTE LSAM.translation TO Camera_LSAM_Free_1.translation
+ROUTE LSAM.translation TO Camera_LSAM_Free_2.translation
+ROUTE LSAM.translation TO Camera_LSAM_Free_3.translation
+ROUTE LSAM.translation TO Triad_LL_OrigRot.position
