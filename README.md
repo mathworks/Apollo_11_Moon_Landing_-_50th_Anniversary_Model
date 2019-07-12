@@ -2,7 +2,7 @@
 
 ## Requirements
 
-Release R2019a
+Release R2018b
 
 ### MathWorks Products (http://www.mathworks.com)
 
@@ -15,7 +15,7 @@ Release R2019a
 
 ## Usage
 
-From MATLAB, open Lunar Module model, apollo50_dap3dof and live script, apollo50_dap3dofsetup.
+From MATLAB, open Lunar Module model, apollo50_dap3dof, and live script, apollo50_dap3dofsetup.
 
 To interact with the Lunar Module model, vary autopilot settings and Lunar Module initial states in the Commands area.  For example, to observe how the digital autopilot design handles increased initial body rates, use the slider components in Configure LM Attitude.
 
