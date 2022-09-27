@@ -4,7 +4,7 @@
 
 Release R2018b
 
-### MathWorks Products (http://www.mathworks.com)
+### MathWorks Products (https://www.mathworks.com)
 
 * MATLAB
 * Simulink
